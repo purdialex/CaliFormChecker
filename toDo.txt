@@ -1,0 +1,12 @@
+1.1: Use my video camera as input and see the line markers
+1.2: Input a video and get back an output video that has the line markers
+
+2.1: Create some sort of easy formula just to check if the Frontlever angles are correct on CAMERA(1.1)
+2.2: Use those same formulas and apply them to the input video and make the output video have the form check text too
+2.3: Make those formulas better and keep testing them on videos.
+
+3.0: Find a way to get data from each frame
+3.1: Classify data as "bent arm", "good form", "pyked hips"
+
+4.0: Use this data to classify videos like I did on step 2.2
+4.1: Build a frontend for the application
