@@ -19,12 +19,15 @@ def video_pose_landmarks(input_video_path, output_video_path):
     fourcc = cv2.VideoWriter_fourcc(*'MP4V')
     out = cv2.VideoWriter(output_video_path, fourcc, fps, (frame_width, frame_height))
 
-    with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
+    with mp_pose.Pose(
+            static_image_mode=False,
+            min_detection_confidence=0.5,
+            min_tracking_confidence=0.5) as pose:
         while cap.isOpened():
             ret, frame = cap.read()
             if not ret:
                 break
-
+            frame = cv2.flip(frame, 0)
             # Convert frame to RGB for MediaPipe
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = pose.process(rgb_frame)
@@ -32,7 +35,8 @@ def video_pose_landmarks(input_video_path, output_video_path):
             # Draw pose landmarks on the frame
             if results.pose_landmarks:
                 mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
-
+            else:
+                pass
             # Write the frame with landmarks to the output video
             out.write(frame)
 
@@ -47,7 +51,7 @@ input_path = input("please enter the path of the video you want to pose landmark
 input_video = input_path
 print(f"Input video path: {input_video}")
 
-output_path = input("please enter the path of the directory + the desired filename in .avi extension")
+output_path = input("please enter the path of the directory + the desired filename in .avi or .mp4 extension")
 output_video =   output_path
 
 

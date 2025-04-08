@@ -1,12 +1,16 @@
-1.1: Use my video camera as input and see the line markers
-1.2: Input a video and get back an output video that has the line markers
+1.1: Use my video camera as input and see the line markers ok
+1.2: Input a video and get back an output video that has the line markers ok
 
-2.1: Create some sort of easy formula just to check if the Frontlever angles are correct on CAMERA(1.1)
+2.0: Play around with the coords to check something-> done in the video mode to check if left shoulder is in frame
+2.1: Create some sort of easy formula just to check if the exercises are correct(it will be done via 3 states)
 2.2: Use those same formulas and apply them to the input video and make the output video have the form check text too
 2.3: Make those formulas better and keep testing them on videos.
 
-3.0: Find a way to get data from each frame
-3.1: Classify data as "bent arm", "good form", "pyked hips"
+3.0: Machine learning using SVM with manual checks if the form is ok
+3.1: Classify data for examples in pullup "Bent arm on start of pull" via 3 states
 
-4.0: Use this data to classify videos like I did on step 2.2
-4.1: Build a frontend for the application
+4.0: Build a frontend of the application
+
+Extra ideas
+State 1: not doing anything -> State 2: Transitioning into the exercise -> State 3: Back up)
+Counter of the exercise (both wrong and good, maybe even "partially good")(make the counter label hidden till you do that certain exercise?)
