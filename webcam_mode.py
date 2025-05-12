@@ -12,6 +12,7 @@ def webcam_pose_landmarks():
     cap = cv2.VideoCapture(0)  # Use the default webcam
 
     with mp_pose.Pose(
+            model_complexity=1,
             min_detection_confidence=0.5,
             min_tracking_confidence=0.5,
             static_image_mode=False,
@@ -31,11 +32,11 @@ def webcam_pose_landmarks():
                 keypoints = get_main_body_points(results.pose_landmarks, mp_pose)
                 key = cv2.waitKey(1) & 0xFF
                 if key == 32:  # Spacebar
-                    shoulder = keypoints["left_shoulder"]
-                    if is_point_in_frame(shoulder):
-                        print(" Left shoulder is in frame:", shoulder)
+                    left_shoulder = keypoints["left_shoulder"]
+                    if is_point_in_frame(left_shoulder):
+                        print(" Left shoulder is in frame:", left_shoulder)
                     else:
-                        print(" Left shoulder is out of frame:", shoulder)
+                        print(" Left shoulder is out of frame:", left_shoulder)
             else:
                 pass
             # Show the frame
