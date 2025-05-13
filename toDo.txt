@@ -1,5 +1,7 @@
 1.1: Use my video camera as input and see the line markers ok
 1.2: Input a video and get back an output video that has the line markers ok
 
-2.0: Play around with the coords to check something-> done in the video mode to check if left shoulder is in frame
-2.1: Create some sort of easy formula just to check if the exercises are correct(it will be done via 3 states)
+2.0: Play around with the coords to check something-> done in the video mode to check if left shoulder is in frame - check
+2.1: Create some sort of easy formula just to check if the exercises are correct(it will be done via 3 states) - check
+2.2: Fix the bullshit of the starting in plank -TODO
+2.3: Maybe make some better rule checks or start with the labeling? We will see which one to do after

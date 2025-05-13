@@ -12,8 +12,19 @@ mp_drawing = mp.solutions.drawing_utils
 def video_pose_landmarks(input_video_path, output_video_path):
     # Open input video
     checker = PushupChecker()
-
     cap = cv2.VideoCapture(input_video_path)
+    rotation_code = None
+    try:
+        # Check for rotation metadata (common in mobile videos) and flip them
+        rotation = int(cap.get(cv2.CAP_PROP_ORIENTATION_META))
+        if rotation == 180:
+            rotation_code = cv2.ROTATE_180
+        elif rotation == 90:
+            rotation_code = cv2.ROTATE_90_CLOCKWISE
+        elif rotation == 270:
+            rotation_code = cv2.ROTATE_90_COUNTERCLOCKWISE
+    except:
+        pass
     if not cap.isOpened():
         print("Error: Could not open video.")
         return
@@ -37,6 +48,9 @@ def video_pose_landmarks(input_video_path, output_video_path):
             ret, frame = cap.read()
             if not ret:
                 break
+
+            if rotation_code is not None:
+                frame = cv2.rotate(frame, rotation_code)
 
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = pose.process(rgb_frame)
