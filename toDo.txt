@@ -3,5 +3,5 @@
 
 2.0: Play around with the coords to check something-> done in the video mode to check if left shoulder is in frame - check
 2.1: Create some sort of easy formula just to check if the exercises are correct(it will be done via 3 states) - check
-2.2: Fix the bullshit of the starting in plank -TODO
-2.3: Maybe make some better rule checks or start with the labeling? We will see which one to do after
+2.2: Fix the bullshit of the starting in plank -KINDA DID IT? -TODO
+2.3: CHANGE THE RULE WITH THE MAX AND MIN ANGLE BULLSHIT IT CAUSES ERRORS

@@ -35,7 +35,7 @@ def is_in_up_position(l_shoulder, l_elbow, l_wrist, r_shoulder, r_elbow, r_wrist
     l_angle = calculate_angle(l_shoulder, l_elbow, l_wrist)
     r_angle = calculate_angle(r_shoulder, r_elbow, r_wrist)
     max_angle = max(l_angle, r_angle)  # Take the more extended arm
-    return max_angle >= 146
+    return max_angle >= 142
 
 
 def is_in_down_position(l_shoulder, l_elbow, l_wrist, r_shoulder, r_elbow, r_wrist):
@@ -81,6 +81,11 @@ class PushupChecker:
                         self.state = PushupState.CHECK
 
             elif self.state == PushupState.CHECK:
+                if is_in_up_position(left_shoulder, left_elbow, left_wrist,
+                                     right_shoulder, right_elbow, right_wrist):
+                    if self.counter == 0:
+                        self.feedback = "Push Up Position is correct"
+
                 if is_in_down_position(left_shoulder, left_elbow, left_wrist,
                                         right_shoulder, right_elbow, right_wrist):
                     self.feedback = "Push back up."
@@ -93,4 +98,4 @@ class PushupChecker:
                     self.state = PushupState.UP  # Change state back to UP after a pushup
                     self.counter += 1  # Increment the pushup count
         else:
-            self.feedback = "Get into the proper plank postion"
+            self.feedback = "Get into the proper Pushup position"
