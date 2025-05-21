@@ -41,7 +41,7 @@ class PushupChecker:
         if not is_body_plank(l_shoulder, l_hip, l_knee, l_ankle, l_wrist,
                              r_shoulder, r_hip, r_knee, r_ankle, r_wrist):
             self.state = PushupState.NOT_PLANK
-            self.feedback = "Fix your plank form"
+            self.feedback = "Get into Plank"
             return
 
         if is_body_plank(l_shoulder, l_hip, l_knee, l_ankle, l_wrist,
@@ -51,12 +51,16 @@ class PushupChecker:
                     if is_in_up_position(l_shoulder, l_elbow, l_wrist, r_shoulder, r_elbow, r_wrist):
                         self.state = PushupState.FULL_UP
                         self.up_state_start_time = time.time()
-                        self.feedback = "Hold still to calibrate..."
+                        self.feedback = "Hold still 2s to calibrate..."
                     return
+                if self.counter >=0 or self.partial_counter >=0:
+                    if is_in_up_position(l_shoulder, l_elbow, l_wrist, r_shoulder, r_elbow, r_wrist):
+                        self.state = PushupState.FULL_UP
+                        self.feedback = "Plank Detected, Restart"
 
             if self.state == PushupState.FULL_UP:
                 if self.elbow_lockout_angle is None:
-                    if time.time() - self.up_state_start_time >= 1.0:
+                    if time.time() - self.up_state_start_time >= 2.0:
                         # Calibrate lockout angle once
                         l_angle = calculate_angle(l_shoulder, l_elbow, l_wrist)
                         r_angle = calculate_angle(r_shoulder, r_elbow, r_wrist)
@@ -75,7 +79,7 @@ class PushupChecker:
                 l_angle = calculate_angle(l_shoulder, l_elbow, l_wrist)
                 r_angle = calculate_angle(r_shoulder, r_elbow, r_wrist)
                 current_angle = max(l_angle, r_angle)
-                if current_angle > self.elbow_lockout_angle - 1:
+                if current_angle > self.elbow_lockout_angle - 3:
                     self.counter += 1
                     self.feedback = f"Full pushup! Total: {self.counter}"
                     self.state = PushupState.FULL_UP
