@@ -3,5 +3,9 @@
 
 2.0: Play around with the coords to check something-> done in the video mode to check if left shoulder is in frame - check
 2.1: Create some sort of easy formula just to check if the exercises are correct(it will be done via 3 states) - check
-2.2: Fix the bullshit of the starting in plank -KINDA DID IT? -TODO
-2.3: CHANGE THE RULE WITH THE MAX AND MIN ANGLE BULLSHIT IT CAUSES ERRORS
+2.2: Fix the bullshit of the starting in plank -KINDA DID IT?
+2.3: CHANGE THE RULE WITH THE MAX AND MIN ANGLE BULLSHIT - done
+
+
+NEW GOAL!
+Change the states so that we have a midway up one and fully locked out state. The midway up will go into either down or fully up state

@@ -1,9 +1,8 @@
 import cv2
 import mediapipe as mp
-from pushup_checker_simple import PushupChecker
+from pushup_checker_complex import PushupChecker
 from utils import get_main_body_points, calculate_angle
 
-import os
 
 # Initialize MediaPipe Pose module
 mp_pose = mp.solutions.pose
@@ -63,10 +62,12 @@ def video_pose_landmarks(input_video_path, output_video_path):
                 mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
 
                 # Display pushup counter and feedback
-                cv2.putText(frame, f'Pushups: {checker.counter}', (10, 40),
+                cv2.putText(frame, f'Perf Pushups: {checker.counter}', (10, 40),
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
                 cv2.putText(frame, f'Feedback: {checker.feedback}', (10, 80),
                             cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2, cv2.LINE_AA)
+                cv2.putText(frame, f'Mid Pushups: {checker.partial_counter}', (10, 120),
+                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
 
                 # --- Angle overlay section ---
                 keypoints = get_main_body_points(results.pose_landmarks, mp_pose)
