@@ -11,14 +11,14 @@ class PushupState:
 
 
 class PushupChecker:
-    def __init__(self):
+    def __init__(self,):
         self.state = PushupState.NOT_PLANK
         self.counter = 0
         self.partial_counter = 0
         self.feedback = "Get into plank position"
-
         self.elbow_lockout_angle = None
         self.up_state_start_time = None
+
 
     def update(self, landmarks, mp_pose):
         keypoints = get_main_body_points(landmarks, mp_pose)
@@ -87,22 +87,3 @@ class PushupChecker:
                     self.partial_counter += 1
                     self.feedback = f"Partial pushup! Total: {self.partial_counter}"
                     self.state = PushupState.DOWN
-
-
-
-                    '''
-
-
-                if is_in_up_position(l_shoulder, l_elbow, l_wrist, r_shoulder, r_elbow, r_wrist):
-                    l_angle = calculate_angle(l_shoulder, l_elbow, l_wrist)
-                    r_angle = calculate_angle(r_shoulder, r_elbow, r_wrist)
-                    current_angle = max(l_angle, r_angle)
-                    if current_angle >= self.elbow_lockout_angle - 10:
-                        self.counter += 1
-                        self.feedback = f"Full pushup! Total: {self.counter}"
-                    else:
-                        self.partial_counter += 1
-                        self.feedback = f"Partial pushup counted. Total: {self.partial_counter}"
-                    self.state = PushupState.FULL_UP
-                    self.up_state_start_time = time.time()
-                    '''

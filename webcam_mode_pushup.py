@@ -1,6 +1,6 @@
 import cv2
 import mediapipe as mp
-from pushup_checker_complex import PushupChecker
+from pushup_checker_simple import PushupChecker
 from utils import get_main_body_points, calculate_angle
 
 # Initialize MediaPipe Pose module
