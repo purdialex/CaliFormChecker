@@ -1,6 +1,6 @@
 import cv2
 import mediapipe as mp
-from pushup_checker_complex import PushupChecker
+from pushup_checker_simple import PushupChecker
 from utils import get_main_body_points, calculate_angle
 
 
@@ -10,7 +10,7 @@ mp_drawing = mp.solutions.drawing_utils
 
 def video_pose_landmarks(input_video_path, output_video_path):
     # Open input video
-    checker = PushupChecker()
+    checker = PushupChecker(log_file=r"D:\Coding chestii\PythonProject\pushup_data.csv")
     cap = cv2.VideoCapture(input_video_path)
     rotation_code = None
     try:
