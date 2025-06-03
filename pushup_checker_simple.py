@@ -19,7 +19,10 @@ class PushupChecker:
         self.feedback = "Get into plank position"
         self.elbow_lockout_angle = None
         self.up_state_start_time = None
+        self.midway_up_start_time = None
         self.frame_index = 0
+        self.pushup_classified = False
+        self.timeout_window = 0.5
 
         self.log_file = log_file
         if self.log_file:
@@ -85,7 +88,7 @@ class PushupChecker:
                 if self.counter >=0 or self.partial_counter >=0:
                     if is_in_up_position(l_shoulder, l_elbow, l_wrist, r_shoulder, r_elbow, r_wrist):
                         self.state = PushupState.FULL_UP
-                        self.feedback = "Plank Detected, Restart"
+                        #self.feedback = "Plank Detected, Restart"
 
             if self.state == PushupState.FULL_UP:
                 if self.elbow_lockout_angle is None:
@@ -103,18 +106,30 @@ class PushupChecker:
             if self.state == PushupState.DOWN:
                 if is_in_up_position(l_shoulder, l_elbow, l_wrist, r_shoulder, r_elbow, r_wrist):
                     self.state = PushupState.MIDWAY_UP
+                    self.midway_up_start_time = time.time()
+                    self.pushu
 
             if self.state == PushupState.MIDWAY_UP:
+                if self.midway_up_start_time is None:
+                    self.midway_up_start_time = time.time()
+
+                ###Variabila ca sa fie doar odata
                 l_angle = calculate_angle(l_shoulder, l_elbow, l_wrist)
                 r_angle = calculate_angle(r_shoulder, r_elbow, r_wrist)
                 current_angle = max(l_angle, r_angle)
+                ############################################0.1 good time
+                if time.time() - self.midway_up_start_time > 0.1:
+                    self.partial_counter += 1
+                    self.feedback = f"Partial pushup! Total: {self.partial_counter}"
+
                 if current_angle > self.elbow_lockout_angle - 3:
                     self.counter += 1
                     self.feedback = f"Full pushup! Total: {self.counter}"
                     self.state = PushupState.FULL_UP
+                    self.midway_up_start_time = None
+
                 if is_in_down_position(l_shoulder, l_elbow, l_wrist, r_shoulder, r_elbow, r_wrist):
-                    self.partial_counter += 1
-                    self.feedback = f"Partial pushup! Total: {self.partial_counter}"
                     self.state = PushupState.DOWN
+
         if self.log_file:
             self.log_frame(keypoints)
