@@ -1,5 +1,35 @@
 from utils import get_main_body_points, calculate_angle
 
+
+def is_shoulder_wrist_lvl(left_wrist, right_wrist, left_shoulder, right_shoulder):
+    avg_wrist_y = (left_wrist[1] + right_wrist[1]) / 2
+    avg_shoulder_y = (left_shoulder[1] + right_shoulder[1]) / 2
+
+    is_hands_ok = abs(avg_wrist_y - avg_shoulder_y) < 0.3
+
+    return is_hands_ok
+
+def is_knees_visible(left_knee, right_knee):
+    return 0 <= left_knee[1] <= 1 and 0 <= right_knee[1] <= 1
+
+def is_mid_squat(left_knee, right_knee, left_ankle, right_ankle, left_hip, right_hip):
+    l_angle = calculate_angle(left_hip, left_knee, left_ankle)
+    r_angle = calculate_angle(right_hip, right_knee, right_ankle)
+
+    return max(l_angle, r_angle) < 130
+
+def is_down_squat(left_knee, right_knee, left_ankle, right_ankle, left_hip, right_hip):
+    l_angle = calculate_angle(left_hip, left_knee, left_ankle)
+    r_angle = calculate_angle(right_hip, right_knee, right_ankle)
+
+    return  max(l_angle, r_angle) < 70
+
+def is_up_position_squat(left_knee, right_knee, left_ankle, right_ankle, left_hip, right_hip):
+    l_angle = calculate_angle(left_hip, left_knee, left_ankle)
+    r_angle = calculate_angle(right_hip, right_knee, right_ankle)
+
+    return max(l_angle, r_angle) > 170
+
 def is_wrist_below_knees(left_wrist, right_wrist, left_knee, right_knee):
 
     avg_wrist_y = (left_wrist[1] + right_wrist[1]) / 2

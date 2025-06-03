@@ -1,4 +1,5 @@
 from is_functions import *
+import csv
 import time
 
 
@@ -11,13 +12,41 @@ class PushupState:
 
 
 class PushupChecker:
-    def __init__(self,):
+    def __init__(self, log_file=None):
         self.state = PushupState.NOT_PLANK
         self.counter = 0
         self.partial_counter = 0
         self.feedback = "Get into plank position"
         self.elbow_lockout_angle = None
         self.up_state_start_time = None
+        self.frame_index = 0
+
+        self.log_file = log_file
+        if self.log_file:
+            self.init_csv()
+
+    def init_csv(self):
+        header = ["frame"]
+        # 12 keypoints * 3 coords (x, y, z)
+        for kp in ["left_shoulder", "left_elbow", "left_wrist", "left_hip", "left_knee", "left_ankle",
+                   "right_shoulder", "right_elbow", "right_wrist", "right_hip", "right_knee", "right_ankle"]:
+            header += [f"{kp}_x", f"{kp}_y", f"{kp}_z"]
+        header.append("label")
+        with open(self.log_file, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(header)
+
+    def log_frame(self, keypoints):
+        row = [self.frame_index]
+        for name in ["left_shoulder", "left_elbow", "left_wrist", "left_hip", "left_knee", "left_ankle",
+                     "right_shoulder", "right_elbow", "right_wrist", "right_hip", "right_knee", "right_ankle"]:
+            coords = keypoints[name]
+            row += [coords[0], coords[1], coords[2]]
+        row.append(self.state)
+        with open(self.log_file, "a", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(row)
+        self.frame_index += 1
 
 
     def update(self, landmarks, mp_pose):
@@ -41,6 +70,7 @@ class PushupChecker:
         if not is_body_plank(l_shoulder, l_hip, l_knee, l_ankle, l_wrist,
                              r_shoulder, r_hip, r_knee, r_ankle, r_wrist):
             self.state = PushupState.NOT_PLANK
+            self.elbow_lockout_angle = None
             self.feedback = "Get into Plank"
             return
 
@@ -87,3 +117,6 @@ class PushupChecker:
                     self.partial_counter += 1
                     self.feedback = f"Partial pushup! Total: {self.partial_counter}"
                     self.state = PushupState.DOWN
+
+        if self.log_file:
+            self.log_frame(keypoints)
