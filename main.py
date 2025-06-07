@@ -1,27 +1,9 @@
-import cv2
-import mediapipe as mp
+from modes.video_mode_pushup import *
 
-# Setup
-mp_pose = mp.solutions.pose
-pose = mp_pose.Pose()
+input_path = "D:\Coding chestii\LandMarkFolder\InputVideo\FullSizeRender2nd.mp4"
+output_path = "D:\Coding chestii\LandMarkFolder\OutputVideoNew\FullSizeRender2nd.mp4"
 
-# Path to your video
-video_path = "D:\\Descarcari\frontlever_test.mp4"  # Change this to your actual filename
-cap = cv2.VideoCapture(video_path)
 
-frame_count = 0
-
-while cap.isOpened():
-    ret, frame = cap.read()
-    if not ret:
-        break
-
-    frame_count += 1
-
-    # Convert image to RGB
-    image_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-    results = pose.process(image_rgb)
-
-    if results.pose_landmarks:
-        landmarks = results.pose_landmarks.landmark
-cap.release()
+print(f"Processing {input_path} and saving to {output_path}...")
+video_pose_landmarks(input_path, output_path)
+print("Processing complete!")
