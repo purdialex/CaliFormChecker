@@ -1,4 +1,4 @@
-from is_functions import *
+from core.is_functions import *
 import time
 
 
@@ -28,7 +28,6 @@ class SquatChecker:
         self.bottom_flag = False
 
     def set_feedback(self, message):
-        """Set feedback with a timestamp to prevent immediate overwrites."""
         self.feedback = message
         self.feedback_timestamp = time.time()
 
