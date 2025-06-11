@@ -66,12 +66,12 @@ def video_pose_landmarks(input_video_path, output_video_path):
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
                 if checker.feedback == "GET LOWER!":
                     cv2.putText(frame, f'Feedback: {checker.feedback}', (10, 80),
-                                cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 0, 0), 5, cv2.LINE_AA)
+                                cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 0, 0), 5, cv2.LINE_AA)
 
                 cv2.putText(frame, f'Feedback: {checker.feedback}', (10, 80),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2, cv2.LINE_AA)
+                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2, cv2.LINE_AA)
                 cv2.putText(frame, f'Mid Squats: {checker.partial_counter}', (10, 120),
-                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2, cv2.LINE_AA)
+                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv2.LINE_AA)
                 # --- Angle overlay section ---
                 keypoints = get_main_body_points(results.pose_landmarks, mp_pose)
 

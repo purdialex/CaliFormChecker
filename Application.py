@@ -1,39 +1,140 @@
 import streamlit as st
-import tempfile
-from modes.video_mode_pushup import video_pose_landmarks
 
-st.set_page_config(page_title="Pushup Analyzer", layout="centered")
-
-st.title("🏋️‍♂️ Pushup Analyzer")
-st.markdown("Upload a video and let AI analyze your pushups.")
+st.set_page_config(page_title="AI Fitness Coach", layout="centered")
 
 st.markdown("""
-Want to learn how to do a perfect pushup?  
-Go to the **Tutorial** page from the sidebar!
-""")
+    <style>
+    /* Apply global font family */
+    html, body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 16px;
+    }
 
-# File uploader
-uploaded_file = st.file_uploader("Upload a pushup video", type=["mp4", "avi"])
+    /* Animation keyframes */
+    @keyframes fadeSlideUp {
+        0% {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
 
-if uploaded_file is not None:
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_input:
-        temp_input.write(uploaded_file.read())
-        input_video_path = temp_input.name
+    .title, .subtitle, .description, .button-container, .info-box {
+        opacity: 0;
+        animation-fill-mode: forwards;
+        animation-timing-function: ease-out;
+    }
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_output:
-        output_video_path = temp_output.name
+    .title {
+        animation-name: fadeSlideUp;
+        animation-duration: 0.8s;
+        animation-delay: 0.2s;
+    }
 
-    st.info("⏳ Processing your video... Please wait.")
-    video_pose_landmarks(input_video_path, output_video_path)
-    st.success("✅ Processing complete!")
+    .subtitle {
+        animation-name: fadeSlideUp;
+        animation-duration: 0.8s;
+        animation-delay: 0.5s;
+    }
 
-    with open(output_video_path, 'rb') as file:
-        st.video(file.read())
+    .description {
+        animation-name: fadeSlideUp;
+        animation-duration: 0.8s;
+        animation-delay: 0.8s;
+    }
 
-    with open(output_video_path, "rb") as file:
-        st.download_button(
-            label="📥 Download Processed Video",
-            data=file,
-            file_name="pushup_processed.mp4",
-            mime="video/mp4"
-        )
+    .button-container {
+        animation-name: fadeSlideUp;
+        animation-duration: 0.8s;
+        animation-delay: 1.1s;
+        display: flex;
+        justify-content: center;
+        gap: 40px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+    }
+
+    .info-box {
+        animation-name: fadeSlideUp;
+        animation-duration: 0.8s;
+        animation-delay: 1.4s;
+        max-width: 600px;
+        margin: 40px auto 30px auto;
+        padding: 20px 25px;
+        background: #fff4e6;
+        border-radius: 15px;
+        border: 2px solid #ff5900;
+        color: #333;
+        font-size: 1.1em;
+        box-shadow: 0 6px 15px rgba(255, 89, 0, 0.15);
+        text-align: center;
+        font-style: italic;
+    }
+
+    .nav-card {
+        background-color: white;
+        border: 3px solid black;
+        border-radius: 20px;
+        width: 200px;
+        text-align: center;
+        padding: 30px 20px;
+        text-decoration: none;
+        color: black !important;
+        font-size: 1.1em;
+        font-weight: 600;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+
+    .nav-card:hover {
+        transform: scale(1.05);
+        background: linear-gradient(135deg, #fff4e6, #ff5900);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-icon {
+        font-size: 4em;
+        margin-bottom: 15px;
+        display: block;
+        text-decoration: none !important;
+    }
+
+    a {
+        text-decoration: none !important;
+    }
+    
+    
+    </style>
+
+    <h1 class="title">🏋️ AI Fitness Coach</h1>
+    <p class="subtitle">Smart Pose-Based Workout Analysis for pushups, squats and pullups</p>
+    <p class="description">
+        Welcome to your AI-powered fitness companion. 
+        Upload your workout videos or use your webcam to receive real-time feedback powered by computer vision.
+        Please make sure to consult the tutorial before attempting the exercises!
+    </p>
+
+    <div class="button-container">
+        <a href="/Video_Processing" class="nav-card">
+            <span class="nav-icon">📹</span>
+            <span>Upload Mode</span>
+        </a>
+        <a href="/Camera_Processing" class="nav-card">
+            <span class="nav-icon">🎥</span>
+            <span>Webcam Mode</span>
+        </a>
+        <a href="/Tutorial" class="nav-card">
+            <span class="nav-icon">📖</span>
+            <span>Tutorial</span>
+        </a>
+    </div>
+
+    <div class="info-box">
+        This project was created to simplify tracking and analyzing the main calisthenics exercises such as pushups, pull-ups, and squats. By leveraging AI and computer vision, it offers an easy-to-use fitness companion that helps users improve their form, monitor progress, and stay motivated on their workout journey. Whether you prefer uploading workout videos or using your webcam for real-time feedback, AI Fitness Coach aims to empower your fitness goals with smart, accessible technology.
+    </div>
+        
+""", unsafe_allow_html=True)
