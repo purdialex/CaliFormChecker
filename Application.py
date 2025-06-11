@@ -1,6 +1,6 @@
 import streamlit as st
 
-st.set_page_config(page_title="AI Fitness Coach", layout="centered")
+st.set_page_config(page_title="CaliFormChecker", layout="centered")
 
 st.markdown("""
     <style>
@@ -110,7 +110,7 @@ st.markdown("""
     
     </style>
 
-    <h1 class="title">🏋️ AI Fitness Coach</h1>
+    <h1 class="title">🏋️ Cali Form Checker</h1>
     <p class="subtitle">Smart Pose-Based Workout Analysis for pushups, squats and pullups</p>
     <p class="description">
         Welcome to your AI-powered fitness companion. 
