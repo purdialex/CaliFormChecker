@@ -49,7 +49,7 @@ class SquatCameraProcessor(VideoProcessorBase):
             draw_angle("right_torso", keypoints["right_shoulder"], keypoints["right_hip"], keypoints["right_knee"], (0, 255, 255))
 
             cv2.putText(img, f'Good Squats: {self.checker.counter}', (10, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-            cv2.putText(img, f'Mid Squats: {self.checker.partial_counter}', (10, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-            cv2.putText(img, f'Feedback: {self.checker.feedback}', (10, 120), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2)
+            cv2.putText(img, f'Mid Squats: {self.checker.partial_counter}', (10, 80), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
+            cv2.putText(img, f'Feedback: {self.checker.feedback}', (10, 120), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
 
         return frame.from_ndarray(img, format="bgr24")
