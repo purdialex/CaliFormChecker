@@ -1,20 +1,25 @@
 import cv2
 import mediapipe as mp
+import streamlit as st
 from core.pushup_checker_complex import PushupChecker
 from core.utils import get_main_body_points, calculate_angle
 
-# Initialize MediaPipe Pose module
+
+
 mp_pose = mp.solutions.pose
 mp_drawing = mp.solutions.drawing_utils
 
-def video_pose_landmarks(input_video_path, output_video_path):
-    # Open input video
+def video_pose_landmarks(input_video_path, output_video_path, progress_bar=None, status_text=None):
+    if progress_bar is None:
+        progress_bar = lambda x: None
+    if status_text is None:
+        status_text = lambda x: None
+
     checker = PushupChecker()
-    cap = cv2.VideoCapture(input_video_path)  # ✅ Fixed: removed second argument
+    cap = cv2.VideoCapture(input_video_path)
     rotation_code = None
 
     try:
-        # Check for rotation metadata (common in mobile videos) and flip if needed
         rotation = int(cap.get(cv2.CAP_PROP_ORIENTATION_META))
         if rotation == 180:
             rotation_code = cv2.ROTATE_180
@@ -29,15 +34,26 @@ def video_pose_landmarks(input_video_path, output_video_path):
         print("Error: Could not open video.")
         return
 
-    # Get video details
     frame_width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
     frame_height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
     fps = int(cap.get(cv2.CAP_PROP_FPS))
+    total_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
 
-    # Create VideoWriter for output
-    #fourcc = cv2.VideoWriter_fourcc(*'MP4V')
-    fourcc = cv2.VideoWriter_fourcc(*'H264')
-    out = cv2.VideoWriter(output_video_path, fourcc, fps, (frame_width, frame_height))
+    target_width, target_height = frame_width, frame_height
+    if frame_width > 1280 or frame_height > 720:
+        aspect_ratio = frame_width / frame_height
+        if aspect_ratio >= 16/9:
+            target_width = 1280
+            target_height = int(1280 / aspect_ratio)
+        else:
+            target_height = 720
+            target_width = int(720 * aspect_ratio)
+
+    target_size = (target_width, target_height)
+    fourcc = cv2.VideoWriter_fourcc(*'avc1')
+    out = cv2.VideoWriter(output_video_path, fourcc, fps, target_size)
+
+    current_frame = 0
 
     with mp_pose.Pose(
         model_complexity=1,
@@ -50,20 +66,22 @@ def video_pose_landmarks(input_video_path, output_video_path):
             if not ret:
                 break
 
-            # Handle rotation
+            current_frame += 1
+            progress_ratio = current_frame / total_frames
+            progress_bar.progress(min(progress_ratio, 1.0))
+            status_text.text(f"Processing frame {current_frame}/{total_frames}...")
+
             if rotation_code is not None:
                 frame = cv2.rotate(frame, rotation_code)
 
+            frame = cv2.resize(frame, target_size)
             rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             results = pose.process(rgb_frame)
 
             if results.pose_landmarks:
                 checker.update(results.pose_landmarks, mp_pose)
-
-                # Draw pose landmarks
                 mp_drawing.draw_landmarks(frame, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
 
-                # Feedback display
                 cv2.putText(frame, f'Perf Pushups: {checker.counter}', (10, 40),
                             cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
                 if checker.feedback == "LOCKOUT BETTER!":
@@ -76,7 +94,6 @@ def video_pose_landmarks(input_video_path, output_video_path):
 
                 keypoints = get_main_body_points(results.pose_landmarks, mp_pose)
 
-                # Extract joints
                 left_shoulder = keypoints["left_shoulder"]
                 left_elbow = keypoints["left_elbow"]
                 left_wrist = keypoints["left_wrist"]
@@ -90,7 +107,6 @@ def video_pose_landmarks(input_video_path, output_video_path):
                 right_knee = keypoints["right_knee"]
                 right_ankle = keypoints["right_ankle"]
 
-                # Compute angles
                 left_arm_angle = calculate_angle(left_shoulder, left_elbow, left_wrist)
                 right_arm_angle = calculate_angle(right_shoulder, right_elbow, right_wrist)
                 left_leg_angle = calculate_angle(left_hip, left_knee, left_ankle)
@@ -99,7 +115,6 @@ def video_pose_landmarks(input_video_path, output_video_path):
                 right_torso_angle = calculate_angle(right_shoulder, right_hip, right_knee)
 
                 h, w, _ = frame.shape
-
                 le_px = int(left_elbow[0] * w), int(left_elbow[1] * h)
                 re_px = int(right_elbow[0] * w), int(right_elbow[1] * h)
                 lk_px = int(left_knee[0] * w), int(left_knee[1] * h)
@@ -122,13 +137,8 @@ def video_pose_landmarks(input_video_path, output_video_path):
 
             out.write(frame)
 
-        cap.release()
-        out.release()
-        cv2.destroyAllWindows()
-
-# Uncomment this block only if using from command line:
-"""
-input_path = input("Enter path of the input video: ")
-output_path = input("Enter output video path (e.g., output.mp4): ")
-video_pose_landmarks(input_path, output_path)
-"""
+    cap.release()
+    out.release()
+    cv2.destroyAllWindows()
+    status_text.text("🎉 Processing complete!")
+    progress_bar.progress(1.0)

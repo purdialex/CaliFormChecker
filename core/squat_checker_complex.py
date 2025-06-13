@@ -102,7 +102,7 @@ class SquatChecker:
             )
             if self.knee_lockout_angle and current_angle > self.knee_lockout_angle - 10:
                 self.counter += 1
-                self.set_feedback("Full Squats!")
+                self.set_feedback("Full Squat!")
                 self.bottom_flag = False
                 self.state = SquatState.FULL_UP
                 return

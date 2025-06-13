@@ -1,9 +1,18 @@
 import streamlit as st
 import tempfile
 from modes.video_mode_pushup import video_pose_landmarks as pushup_processor
-from modes.video_mode_pushup import video_pose_landmarks as squat_processor
+from modes.video_mode_squat import video_pose_landmarks as squat_processor
 
 st.set_page_config(page_title="Video Upload", layout="centered")
+
+st.markdown("""
+    <style>
+    /* Override progress bar color */
+    .stProgress > div > div > div > div {
+        background-color: #FFA500 !important;  /* Orange */
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 # Inject custom style with animations
 st.markdown("""
@@ -74,7 +83,7 @@ st.markdown("""
 
 # UI controls
 mode = st.radio("Choose exercise type:", ["Pushup", "Squat"])
-uploaded_file = st.file_uploader("Upload a video", type=["mp4", "avi"])
+uploaded_file = st.file_uploader("Upload a video", type=["mp4", "avi", "mpeg4"])
 
 # Processing logic
 if uploaded_file is not None:
@@ -86,11 +95,13 @@ if uploaded_file is not None:
         output_video_path = temp_output.name
 
     st.info("⏳ Processing your video... Please wait.")
+    progress_bar = st.progress(0)
+    status_text = st.empty()
 
     if mode == "Pushup":
-        pushup_processor(input_video_path, output_video_path)
+        pushup_processor(input_video_path, output_video_path, progress_bar, status_text)
     if mode == "Squat":
-        squat_processor(input_video_path, output_video_path)
+        squat_processor(input_video_path, output_video_path, progress_bar, status_text)
 
     st.success("✅ Processing complete!")
 
