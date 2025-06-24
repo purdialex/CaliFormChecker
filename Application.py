@@ -134,7 +134,7 @@ st.markdown("""
     </div>
 
     <div class="info-box">
-        This project was created to simplify tracking and analyzing the main calisthenics exercises such as pushups, pull-ups, and squats. By leveraging AI and computer vision, it offers an easy-to-use fitness companion that helps users improve their form, monitor progress, and stay motivated on their workout journey. Whether you prefer uploading workout videos or using your webcam for real-time feedback, AI Fitness Coach aims to empower your fitness goals with smart, accessible technology.
+        This project was created to simplify tracking and analyzing the main calisthenics exercises such as pushups and squats. By leveraging AI and computer vision, it offers an easy-to-use fitness companion that helps users improve their form, monitor progress, and stay motivated on their workout journey. Whether you prefer uploading workout videos or using your webcam for real-time feedback, AI Fitness Coach aims to empower your fitness goals with smart, accessible technology.
     </div>
         
 """, unsafe_allow_html=True)

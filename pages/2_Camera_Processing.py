@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_webrtc import webrtc_streamer
+
 from modes.streamlit_push_camera import PushupCameraProcessor
 from modes.streamlit_squat_camera import SquatCameraProcessor
 
@@ -73,10 +74,10 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Exercise mode selection
-mode = st.radio("Choose exercise type:", ["Pushup", "Squat"])
+mode = st.radio("Choose exercise type:", ["Pushup", "Squat", "Pullup"])
 if mode == "Pushup":
     processor = PushupCameraProcessor
-else:
+if mode == "Squat":
     processor = SquatCameraProcessor
 
 # Streamlit WebRTC camera processing

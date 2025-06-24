@@ -10,9 +10,13 @@ def is_shoulder_wrist_lvl(left_wrist, right_wrist, left_shoulder, right_shoulder
     return is_hands_ok
 
 
-
 def is_knees_visible(left_knee, right_knee):
     return 0 <= left_knee[1] <= 1 and 0 <= right_knee[1] <= 1
+
+def is_joints_visible(left_wrist, left_elbow, left_shoulder, right_wrist, right_elbow, right_shoulder):
+    return (0 <= left_wrist[1] <= 1 and 0 <= right_wrist[1] <= 1
+            and 0 <= left_elbow[1] <= 1 and 0 <= right_elbow[1] <= 1
+            and 0 <= left_shoulder[1] <= 1 and 0 <= right_shoulder[1] <= 1)
 
 def is_mid_squat(left_knee, right_knee, left_ankle, right_ankle, left_hip, right_hip):
     l_angle = calculate_angle(left_hip, left_knee, left_ankle)

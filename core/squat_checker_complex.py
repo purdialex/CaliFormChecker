@@ -33,7 +33,6 @@ class SquatChecker:
 
     def update(self, landmarks, mp_pose):
         keypoints = get_main_body_points(landmarks, mp_pose)
-
         l_hip, l_knee, l_ankle = keypoints["left_hip"], keypoints["left_knee"], keypoints["left_ankle"]
         r_hip, r_knee, r_ankle = keypoints["right_hip"], keypoints["right_knee"], keypoints["right_ankle"]
         l_wrist, r_wrist = keypoints["left_wrist"], keypoints["right_wrist"]

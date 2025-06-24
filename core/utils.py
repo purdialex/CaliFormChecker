@@ -57,5 +57,5 @@ def draw_angle(img, name, pt1, pt2, pt3, color, h, w):
     """
     angle = calculate_angle(pt1, pt2, pt3)
     px = int(pt2[0] * w), int(pt2[1] * h)
-    cv2.putText(img, f'{int(angle)}°', (px[0], px[1] - 10),
+    cv2.putText(img, f'{int(angle)}', (px[0], px[1] - 10),
                 cv2.FONT_HERSHEY_SIMPLEX, 0.7, color, 2, cv2.LINE_AA)
