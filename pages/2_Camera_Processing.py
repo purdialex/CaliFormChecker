@@ -74,7 +74,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Exercise mode selection
-mode = st.radio("Choose exercise type:", ["Pushup", "Squat", "Pullup"])
+mode = st.radio("Choose exercise type:", ["Pushup", "Squat"])
 if mode == "Pushup":
     processor = PushupCameraProcessor
 if mode == "Squat":
