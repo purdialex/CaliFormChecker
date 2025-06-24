@@ -7,54 +7,32 @@ st.set_page_config(page_title="Video Upload", layout="centered")
 
 st.markdown("""
     <style>
-    /* Override progress bar color */
     .stProgress > div > div > div > div {
-        background-color: #FFA500 !important;  /* Orange */
+        background-color: #FFA500 !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Inject custom style with animations
+# Custom animations and styles
 st.markdown("""
     <style>
     html, body {
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         font-size: 16px;
     }
-
     @keyframes fadeSlideUp {
-        0% {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        0% { opacity: 0; transform: translateY(20px); }
+        100% { opacity: 1; transform: translateY(0); }
     }
-
     .fade-1, .fade-2, .fade-3 {
         opacity: 0;
         animation-name: fadeSlideUp;
         animation-fill-mode: forwards;
         animation-timing-function: ease-out;
     }
-
-    .fade-1 {
-        animation-delay: 0.2s;
-        animation-duration: 0.8s;
-    }
-
-    .fade-2 {
-        animation-delay: 0.5s;
-        animation-duration: 0.8s;
-    }
-
-    .fade-3 {
-        animation-delay: 0.8s;
-        animation-duration: 0.8s;
-    }
-
+    .fade-1 { animation-delay: 0.2s; animation-duration: 0.8s; }
+    .fade-2 { animation-delay: 0.5s; animation-duration: 0.8s; }
+    .fade-3 { animation-delay: 0.8s; animation-duration: 0.8s; }
     .highlight-box {
         background-color: #fff4e6;
         border: 2px solid #ff5900;
@@ -70,45 +48,59 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Animated title
+# UI Headings
 st.markdown('<h1 class="fade-1">📹 Upload Video for Analysis</h1>', unsafe_allow_html=True)
 st.markdown('<p class="fade-2">Choose an exercise and upload your video to receive AI-powered feedback.</p>', unsafe_allow_html=True)
-
-# Animated info box
+st.markdown('<p class = "fade-3">In order to upload more videos and download them without refreshing the order of operation is the following: Upload->Download->Press x On The Video Preview->Reset->Choose Exercise->Upload Again', unsafe_allow_html=True)
 st.markdown("""
 <div class="highlight-box fade-3">
     ⚠️ Make sure your full body is visible in the frame and allow 2 seconds for calibration at the start.
 </div>
 """, unsafe_allow_html=True)
 
-# UI controls
+# UI Controls
 mode = st.radio("Choose exercise type:", ["Pushup", "Squat"])
 uploaded_file = st.file_uploader("Upload a video", type=["mp4", "avi", "mpeg4"])
 
-# Processing logic
+# Reset button
+if st.button("🔁 Reset"):
+    st.session_state.clear()
+    st.rerun()
+
+# Main logic
 if uploaded_file is not None:
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_input:
-        temp_input.write(uploaded_file.read())
-        input_video_path = temp_input.name
+    # Check if uploaded file is new or different from last
+    if ("processed_video_path" not in st.session_state or
+        st.session_state.get("last_uploaded_file") != uploaded_file.name):
 
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_output:
-        output_video_path = temp_output.name
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_input:
+            temp_input.write(uploaded_file.read())
+            input_video_path = temp_input.name
 
-    st.info("⏳ Processing your video... Please wait.")
-    progress_bar = st.progress(0)
-    status_text = st.empty()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_output:
+            output_video_path = temp_output.name
 
-    if mode == "Pushup":
-        pushup_processor(input_video_path, output_video_path, progress_bar, status_text)
-    if mode == "Squat":
-        squat_processor(input_video_path, output_video_path, progress_bar, status_text)
+        # Save to session state
+        st.session_state["input_video_path"] = input_video_path
+        st.session_state["processed_video_path"] = output_video_path
+        st.session_state["last_uploaded_file"] = uploaded_file.name
 
-    st.success("✅ Processing complete!")
+        st.info("⏳ Processing your video... Please wait.")
+        progress_bar = st.progress(0)
+        status_text = st.empty()
 
-    with open(output_video_path, 'rb') as file:
+        if mode == "Pushup":
+            pushup_processor(input_video_path, output_video_path, progress_bar, status_text)
+        else:
+            squat_processor(input_video_path, output_video_path, progress_bar, status_text)
+
+        st.success("✅ Processing complete!")
+    else:
+        st.success("✅ Using previously processed video!")
+
+    # Display and download
+    with open(st.session_state["processed_video_path"], 'rb') as file:
         st.video(file.read())
-
-    with open(output_video_path, "rb") as file:
         st.download_button(
             label="📥 Download Processed Video",
             data=file,

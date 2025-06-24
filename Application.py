@@ -111,7 +111,7 @@ st.markdown("""
     </style>
 
     <h1 class="title">🏋️ Cali Form Checker</h1>
-    <p class="subtitle">Smart Pose-Based Workout Analysis for pushups, squats and pullups</p>
+    <p class="subtitle">Smart Pose-Based Workout Analysis for pushups and squats</p>
     <p class="description">
         Welcome to your AI-powered fitness companion. 
         Upload your workout videos or use your webcam to receive real-time feedback powered by computer vision.

@@ -78,11 +78,12 @@ st.markdown("""
   <li>Lower yourself until your elbows are at 90 degrees</li>
   <li>Push back up fully</li>
   <li>Keep your core engaged</li>
+  <li>MAKE SURE TO HAVE YOUR BODY IN THE PLANK POSITION(AS SIDEWAYS AS YOU CAN FOR DETECTION)</li>
 </ul>
 """, unsafe_allow_html=True)
 
 # Pushup video
-pushup_video_path = r"D:\Coding chestii\PythonProject\pages\FullSizeRender2nd.mp4"
+pushup_video_path = r"pages/tutorial_videos/Pushup_Tutorial.mp4"
 st.video(pushup_video_path)
 
 # Divider
@@ -97,9 +98,10 @@ st.markdown("""
   <li>Lower down as if sitting on a chair until your thighs are parallel to the floor</li>
   <li>Push through your heels to stand back up</li>
   <li>Engage your core throughout</li>
+  <li>MAKE SURE TO HAVE YOUR WRIST LEVEL WITH THE SHOULDER IN ORDER TO START THE MOVEMENT</li>
 </ul>
 """, unsafe_allow_html=True)
 
 # Squat video
-squat_video_path = r"D:\Coding chestii\PythonProject\pages\FullSizeRender2nd.mp4"
+squat_video_path = r"pages/tutorial_videos/Squat_Tutorial.mp4"
 st.video(squat_video_path)
