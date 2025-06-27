@@ -42,7 +42,7 @@ class SquatCameraProcessor(VideoProcessorBase):
                        (0, 0, 255), h, w)
             draw_angle(img, "left_torso", keypoints["left_shoulder"], keypoints["left_hip"], keypoints["left_knee"],
                        (0, 255, 255), h, w)
-            draw_angle(img, "right_torso", keypoints["right_shoulder"], keypoints["right_hip"], keypoints["right_knee"],
+            draw_angle(img, "right_torso", keypoints["r ight_shoulder"], keypoints["right_hip"], keypoints["right_knee"],
                        (0, 255, 255), h, w)
 
             cv2.putText(img, f'Good Squats: {self.checker.counter}', (10, 40),
