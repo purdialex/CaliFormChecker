@@ -4,7 +4,7 @@
 ##### git clone https://github.com/purdialex/CaliFormChecker.git
 ### 2. Change the working directory 
 ##### cd CaliFormChecker
-### 3. Install required dendencies
+### 3. Install required dependencies
 ##### pip install opencv-python~=4.11.0.86
 ##### pip install numpy~=1.26.4
 ##### pip install mediapipe~=0.10.21
